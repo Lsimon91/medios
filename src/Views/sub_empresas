@@ -1,0 +1,22 @@
+{% extends "layout.twig" %}
+
+{% block title %}Sub-empresas{% endblock %}
+
+{% block content %}
+<h2>Listado de Sub-empresas</h2>
+<!-- Implementa la lista de sub-empresas aquí -->
+{% endblock %}{% extends "layout.twig" %}
+
+{% block title %}Crear Sub-empresa{% endblock %}
+
+{% block content %}
+<h2>Crear Nueva Sub-empresa</h2>
+<!-- Implementa el formulario de creación de sub-empresa aquí -->
+{% endblock %}{% extends "layout.twig" %}
+
+{% block title %}Editar Sub-empresa{% endblock %}
+
+{% block content %}
+<h2>Editar Sub-empresa</h2>
+<!-- Implementa el formulario de edición de sub-empresa aquí -->
+{% endblock %}

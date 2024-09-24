@@ -1,0 +1,29 @@
+{% extends "layout.twig" %}
+
+{% block title %}Iniciar Sesión{% endblock %}
+
+{% block content %}
+<h2>Iniciar Sesión</h2>
+<!-- Implementa el formulario de inicio de sesión aquí -->
+{% endblock %}{% extends "layout.twig" %}
+
+{% block title %}Registro{% endblock %}
+
+{% block content %}
+<h2>Registro</h2>
+<!-- Implementa el formulario de registro aquí -->
+{% endblock %}{% extends "layout.twig" %}
+
+{% block title %}Recuperar Contraseña{% endblock %}
+
+{% block content %}
+<h2>Recuperar Contraseña</h2>
+<!-- Implementa el formulario de recuperación de contraseña aquí -->
+{% endblock %}{% extends "layout.twig" %}
+
+{% block title %}Restablecer Contraseña{% endblock %}
+
+{% block content %}
+<h2>Restablecer Contraseña</h2>
+<!-- Implementa el formulario de restablecimiento de contraseña aquí -->
+{% endblock %}

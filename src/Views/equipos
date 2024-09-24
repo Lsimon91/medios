@@ -1,0 +1,22 @@
+{% extends "layout.twig" %}
+
+{% block title %}Equipos{% endblock %}
+
+{% block content %}
+<h2>Listado de Equipos</h2>
+<!-- Implementa la lista de equipos aquí -->
+{% endblock %}{% extends "layout.twig" %}
+
+{% block title %}Crear Equipo{% endblock %}
+
+{% block content %}
+<h2>Crear Nuevo Equipo</h2>
+<!-- Implementa el formulario de creación de equipo aquí -->
+{% endblock %}{% extends "layout.twig" %}
+
+{% block title %}Editar Equipo{% endblock %}
+
+{% block content %}
+<h2>Editar Equipo</h2>
+<!-- Implementa el formulario de edición de equipo aquí -->
+{% endblock %}

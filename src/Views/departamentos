@@ -1,0 +1,22 @@
+{% extends "layout.twig" %}
+
+{% block title %}Departamentos{% endblock %}
+
+{% block content %}
+<h2>Listado de Departamentos</h2>
+<!-- Implementa la lista de departamentos aquí -->
+{% endblock %}{% extends "layout.twig" %}
+
+{% block title %}Crear Departamento{% endblock %}
+
+{% block content %}
+<h2>Crear Nuevo Departamento</h2>
+<!-- Implementa el formulario de creación de departamento aquí -->
+{% endblock %}{% extends "layout.twig" %}
+
+{% block title %}Editar Departamento{% endblock %}
+
+{% block content %}
+<h2>Editar Departamento</h2>
+<!-- Implementa el formulario de edición de departamento aquí -->
+{% endblock %}
