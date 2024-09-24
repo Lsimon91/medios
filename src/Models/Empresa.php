@@ -1,11 +1,15 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Empresa extends Model
 {
-    protected $fillable = ["name"];
+    protected $fillable = ['name'];
 
-    // Implementa las relaciones y métodos aquí
+    public function subEmpresas()
+    {
+        return $this->hasMany(SubEmpresa::class);
+    }
 }

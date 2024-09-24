@@ -1,12 +1,18 @@
 <?php
+
 namespace App\Traits;
+
+use App\Models\Permission;
 
 trait HasPermissions
 {
     public function hasPermission($permission)
     {
-        // Implementa la lógica de verificación de permisos aquí
+        return $this->role->permissions->contains('slug', $permission);
     }
 
-    // Implementa otros métodos relacionados con permisos aquí
+    public function hasRole($role)
+    {
+        return $this->role->name === $role;
+    }
 }

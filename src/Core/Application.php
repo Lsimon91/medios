@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Core;
 
 use Twig\Environment;
@@ -6,12 +7,22 @@ use Twig\Loader\FilesystemLoader;
 
 class Application
 {
-    private $twig;
+    protected $router;
+    protected $twig;
 
     public function __construct()
     {
-        $loader = new FilesystemLoader(__DIR__ . "/../Views");
+        $this->router = new Router();
+        $loader = new FilesystemLoader(__DIR__ . '/../Views');
         $this->twig = new Environment($loader);
+    }
+
+    public function run()
+    {
+        $uri = $_SERVER['REQUEST_URI'];
+        $method = $_SERVER['REQUEST_METHOD'];
+
+        $this->router->dispatch($uri, $method);
     }
 
     public function render($template, $data = [])
@@ -19,5 +30,8 @@ class Application
         echo $this->twig->render($template, $data);
     }
 
-    // Implementa otros métodos de la aplicación aquí
+    public function getRouter()
+    {
+        return $this->router;
+    }
 }

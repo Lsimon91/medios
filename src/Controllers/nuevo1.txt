@@ -1,0 +1,166 @@
+Entendido. Vamos a crear un HomeController más apropiado para tu proyecto de Gestión de Activos. Este controlador mostrará un resumen de la información relevante en la página de inicio. Aquí tienes un ejemplo de cómo podría ser:
+
+<?php
+
+namespace App\Controllers;
+
+use App\Models\Equipo;
+use App\Models\Departamento;
+use App\Models\Mantenimiento;
+
+class HomeController extends BaseController
+{
+    public function index()
+    {
+        // Obtener estadísticas generales
+        $totalEquipos = Equipo::count();
+        $equiposActivos = Equipo::where('estado', 'Activo')->count();
+        $equiposEnMantenimiento = Equipo::where('estado', 'En mantenimiento')->count();
+        $totalDepartamentos = Departamento::count();
+
+        // Obtener los últimos equipos agregados
+        $ultimosEquipos = Equipo::orderBy('created_at', 'desc')->limit(5)->get();
+
+        // Obtener los próximos mantenimientos programados
+        $proximosMantenimientos = Mantenimiento::where('fecha_mantenimiento', '>', date('Y-m-d'))
+            ->orderBy('fecha_mantenimiento', 'asc')
+            ->limit(5)
+            ->get();
+
+        // Calcular el porcentaje de equipos por estado
+        $porcentajeActivos = ($totalEquipos > 0) ? ($equiposActivos / $totalEquipos) * 100 : 0;
+        $porcentajeEnMantenimiento = ($totalEquipos > 0) ? ($equiposEnMantenimiento / $totalEquipos) * 100 : 0;
+        $porcentajeInactivos = 100 - $porcentajeActivos - $porcentajeEnMantenimiento;
+
+        $data = [
+            'totalEquipos' => $totalEquipos,
+            'equiposActivos' => $equiposActivos,
+            'equiposEnMantenimiento' => $equiposEnMantenimiento,
+            'totalDepartamentos' => $totalDepartamentos,
+            'ultimosEquipos' => $ultimosEquipos,
+            'proximosMantenimientos' => $proximosMantenimientos,
+            'porcentajeActivos' => $porcentajeActivos,
+            'porcentajeEnMantenimiento' => $porcentajeEnMantenimiento,
+            'porcentajeInactivos' => $porcentajeInactivos
+        ];
+
+        return $this->render('home/index', $data);
+    }
+}
+
+HomeController.php
+Este controlador hace lo siguiente:
+
+Obtiene estadísticas generales sobre equipos y departamentos.
+Recupera los últimos 5 equipos agregados al sistema.
+Obtiene los próximos 5 mantenimientos programados.
+Calcula los porcentajes de equipos por estado.
+Ahora, necesitarás crear una vista correspondiente. Crea un archivo src/Views/home/index.php:
+
+<h1>Panel de Control - Gestión de Activos</h1>
+
+<div class="row mt-4">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total de Equipos</h5>
+                <p class="card-text display-4"><?= $totalEquipos ?></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Equipos Activos</h5>
+                <p class="card-text display-4"><?= $equiposActivos ?></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">En Mantenimiento</h5>
+                <p class="card-text display-4"><?= $equiposEnMantenimiento ?></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Departamentos</h5>
+                <p class="card-text display-4"><?= $totalDepartamentos ?></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <h3>Últimos Equipos Agregados</h3>
+        <ul class="list-group">
+            <?php foreach ($ultimosEquipos as $equipo): ?>
+                <li class="list-group-item">
+                    <?= $equipo->marca ?> <?= $equipo->modelo ?> - <?= $equipo->numero_serie ?>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+    <div class="col-md-6">
+        <h3>Próximos Mantenimientos</h3>
+        <ul class="list-group">
+            <?php foreach ($proximosMantenimientos as $mantenimiento): ?>
+                <li class="list-group-item">
+                    <?= $mantenimiento->equipo->marca ?> <?= $mantenimiento->equipo->modelo ?> - 
+                    <?= date('d/m/Y', strtotime($mantenimiento->fecha_mantenimiento)) ?>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <h3>Estado de los Equipos</h3>
+        <div class="progress" style="height: 30px;">
+            <div class="progress-bar bg-success" role="progressbar" style="width: <?= $porcentajeActivos ?>%">
+                Activos (<?= number_format($porcentajeActivos, 1) ?>%)
+            </div>
+            <div class="progress-bar bg-warning" role="progressbar" style="width: <?= $porcentajeEnMantenimiento ?>%">
+                En Mantenimiento (<?= number_format($porcentajeEnMantenimiento, 1) ?>%)
+            </div>
+            <div class="progress-bar bg-danger" role="progressbar" style="width: <?= $porcentajeInactivos ?>%">
+                Inactivos (<?= number_format($porcentajeInactivos, 1) ?>%)
+            </div>
+        </div>
+    </div>
+</div>
+
+index.php
+Este código HTML crea un panel de control con:
+
+Tarjetas que muestran estadísticas generales.
+Listas de los últimos equipos agregados y próximos mantenimientos.
+Una barra de progreso que muestra visualmente el estado de los equipos.
+Recuerda que necesitarás tener un BaseController del que HomeController herede, que implemente el método render. Aquí tienes un ejemplo básico:
+
+<?php
+
+namespace App\Controllers;
+
+class BaseController
+{
+    protected function render($view, $data = [])
+    {
+        extract($data);
+        ob_start();
+        include __DIR__ . "/../Views/$view.php";
+        $content = ob_get_clean();
+        
+        include __DIR__ . "/../Views/layout/main.php";
+    }
+}
+
+BaseController.php
+Asegúrate de que tus modelos (Equipo, Departamento, Mantenimiento) estén correctamente definidos y que uses el ORM adecuado (como Eloquent) para las consultas a la base de datos.
+
+Este enfoque te dará una página de inicio informativa y útil para tu sistema de Gestión de Activos. Puedes personalizar y expandir esta vista según las necesidades específicas de tu proyecto.

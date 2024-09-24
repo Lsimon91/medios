@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Core\Application;
@@ -15,7 +16,7 @@ class Controller
 
     protected function render($template, $data = [])
     {
-        $data["csrf_token"] = CsrfHelper::generateToken();
+        $data['csrf_token'] = CsrfHelper::generateToken();
         $this->app->render($template, $data);
     }
 }

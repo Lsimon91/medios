@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Models\SubEmpresa;
@@ -6,7 +7,7 @@ use App\Models\Empresa;
 
 class SubEmpresaController extends CrudController
 {
-    protected $viewPath = "sub_empresas";
+    protected $viewPath = 'sub_empresas';
 
     protected function getModelClass()
     {
@@ -16,10 +17,21 @@ class SubEmpresaController extends CrudController
     protected function getValidationRules()
     {
         return [
-            "name" => "required",
-            "empresa_id" => "required|numeric"
+            'name' => 'required',
+            'empresa_id' => 'required|numeric'
         ];
     }
 
-    // Implementa los métodos específicos aquí
+    public function create()
+    {
+        $empresas = Empresa::all();
+        $this->render($this->viewPath . '/create.twig', ['empresas' => $empresas]);
+    }
+
+    public function edit($id)
+    {
+        $item = $this->model::findOrFail($id);
+        $empresas = Empresa::all();
+        $this->render($this->viewPath . '/edit.twig', ['item' => $item, 'empresas' => $empresas]);
+    }
 }

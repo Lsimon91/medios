@@ -1,15 +1,21 @@
 <?php
+
 namespace App\Helpers;
 
 class CsrfHelper
 {
     public static function generateToken()
     {
-        // Implementa la generación de token CSRF aquí
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+        return $_SESSION['csrf_token'];
     }
 
     public static function verifyToken($token)
     {
-        // Implementa la verificación de token CSRF aquí
+        if (!isset($_SESSION['csrf_token']) || $token !== $_SESSION['csrf_token']) {
+            throw new \Exception('CSRF token mismatch');
+        }
     }
 }
